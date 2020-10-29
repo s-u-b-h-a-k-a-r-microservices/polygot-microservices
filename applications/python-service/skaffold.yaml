@@ -1,0 +1,9 @@
+apiVersion: skaffold/v2beta8
+kind: Config
+metadata:
+  name: polygot-microservices
+build:
+  artifacts:
+    - image: subhakarkotta/polygot-microservices-python
+      docker:
+         dockerfile: Dockerfile

@@ -1,0 +1,55 @@
+apiVersion: skaffold/v2beta8
+kind: Config
+metadata:
+  name: polygot-microservices
+build:
+  artifacts:
+    - image: subhakarkotta/polygot-microservices-python
+      context: applications/python-service
+      docker:
+         dockerfile: Dockerfile
+    - image: subhakarkotta/polygot-microservices-spring
+      context: applications/spring-service
+      jib: {}
+    - image: subhakarkotta/polygot-microservices-go
+      context: applications/go-service
+      docker:
+         dockerfile: Dockerfile
+deploy:
+  helm:
+    releases:
+      - name: consul 
+        chartPath: hashicorp/consul
+        remote: true
+        namespace: consul
+        wait: true
+        valuesFiles: [ helm-charts/consul/values.yaml ]
+      - name: ambassador 
+        chartPath: datawire/ambassador
+        remote: true
+        namespace: ambassador
+        wait: true
+      - name: go-service 
+        chartPath: helm-charts/go-service
+        remote: true
+        namespace: default
+        wait: true
+        artifactOverrides:
+          image.repository: subhakarkotta/polygot-microservices-go
+        valuesFiles: [ helm-charts/go-service/values.yaml ]
+      - name: python-service 
+        chartPath: helm-charts/python-service
+        remote: true
+        namespace: default
+        wait: true
+        artifactOverrides:
+          image.repository: subhakarkotta/polygot-microservices-python
+        valuesFiles: [ helm-charts/python-service/values.yaml ]
+      - name: spring-service 
+        chartPath: helm-charts/spring-service
+        remote: true
+        namespace: default
+        wait: true
+        artifactOverrides:
+          image.repository: subhakarkotta/polygot-microservices-spring
+        valuesFiles: [ helm-charts/spring-service/values.yaml ]
