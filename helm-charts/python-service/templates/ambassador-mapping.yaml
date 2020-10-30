@@ -5,6 +5,6 @@ metadata:
 spec:
   prefix: /api/python-service/
   service: {{ .Chart.Name }}
-  resolver: consul-dc1
+  resolver: {{ .Values.resolver }}
   load_balancer:
     policy: round_robin

@@ -12,7 +12,7 @@ global:
 
   # name sets the prefix used for all resources in the helm chart.
   # If not set, the prefix will be "<helm release name>-consul".
-  name: sap
+  name: consul
 
   # domain is the domain Consul will answer DNS queries for
   # (see https://www.consul.io/docs/agent/options.html#_domain) and the domain
@@ -59,7 +59,7 @@ global:
   # as. This can't be changed once the Consul cluster is up and running
   # since Consul doesn't support an automatic way to change this value
   # currently: https://github.com/hashicorp/consul/issues/1858.
-  datacenter: dc1
+  datacenter: microservices-dc-1
 
   # enablePodSecurityPolicies controls whether pod
   # security policies are created for the Consul components created by this
@@ -613,7 +613,7 @@ ui:
   # balancer (for supported K8S installations) to access the UI.
   service:
     enabled: true
-    type: null
+    type: LoadBalancer
 
     # Annotations to apply to the UI service.
     # Example:
@@ -637,7 +637,7 @@ ui:
 syncCatalog:
   # True if you want to enable the catalog sync. Set to "-" to inherit from
   # global.enabled.
-  enabled: false
+  enabled: true
   image: null
   default: true # true will sync by default, otherwise requires annotation
 

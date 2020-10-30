@@ -1,4 +1,5 @@
 replicaCount: 1
+resolver: consul-dc1
 
 image:
   repository: subhakarkotta/polygot-microservices-python

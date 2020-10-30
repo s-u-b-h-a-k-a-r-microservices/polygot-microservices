@@ -1,0 +1,32 @@
+apiVersion: skaffold/v2beta8
+kind: Config
+metadata:
+  name: polygot-base
+deploy:
+  kustomize:
+    paths: ["kustomize/metallb-system"]
+  helm:
+    releases:
+      - name: ambassador 
+        chartPath: datawire/ambassador
+        namespace: ambassador
+        createNamespace: true
+        remote: true
+      - name: consul 
+        chartPath: hashicorp/consul
+        namespace: consul
+        createNamespace: true
+        remote: true
+        setValues:
+          global.name: consul
+          global.datacenter: microservices-dc-1
+          connectInject.enabled: true
+          syncCatalog.enabled: true
+        valuesFiles: [ helm-charts/consul/values.yaml ]
+      - name: consul-resolver 
+        chartPath: helm-charts/consul-resolver
+        namespace: ambassador
+        setValues:
+          consul.host: consul-server.consul.svc.cluster.local
+          datacenter: microservices-dc-1
+        valuesFiles: [ helm-charts/consul-resolver/values.yaml ]

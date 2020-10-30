@@ -1,0 +1,6 @@
+consul:
+  host: consul-server.consul.svc.cluster.local
+  port: 8500
+resolver:
+  name: consul-dc1
+ 

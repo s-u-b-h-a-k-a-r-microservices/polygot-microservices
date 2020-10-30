@@ -18,38 +18,28 @@ build:
 deploy:
   helm:
     releases:
-      - name: consul 
-        chartPath: hashicorp/consul
-        remote: true
-        namespace: consul
-        wait: true
-        valuesFiles: [ helm-charts/consul/values.yaml ]
-      - name: ambassador 
-        chartPath: datawire/ambassador
-        remote: true
-        namespace: ambassador
-        wait: true
       - name: go-service 
-        chartPath: helm-charts/go-service
-        remote: true
-        namespace: default
         wait: true
+        chartPath: helm-charts/go-service
+        namespace: default
         artifactOverrides:
           image.repository: subhakarkotta/polygot-microservices-go
         valuesFiles: [ helm-charts/go-service/values.yaml ]
       - name: python-service 
-        chartPath: helm-charts/python-service
-        remote: true
-        namespace: default
         wait: true
+        chartPath: helm-charts/python-service
+        namespace: default
         artifactOverrides:
           image.repository: subhakarkotta/polygot-microservices-python
+        setValues:
+          resolver: consul-dc1
         valuesFiles: [ helm-charts/python-service/values.yaml ]
       - name: spring-service 
-        chartPath: helm-charts/spring-service
-        remote: true
-        namespace: default
         wait: true
+        chartPath: helm-charts/spring-service
+        namespace: default
         artifactOverrides:
           image.repository: subhakarkotta/polygot-microservices-spring
+        setValues:
+          resolver: consul-dc1
         valuesFiles: [ helm-charts/spring-service/values.yaml ]
